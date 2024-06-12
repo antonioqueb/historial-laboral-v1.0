@@ -1,12 +1,12 @@
-// app/actions/createEmployee.js
+// /app/actions/createEmployee.js
 import { PrismaClient } from '@prisma/client';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@next-auth/react'
-// file: app/actions/createEmployee.js
+import { authOptions } from '../api/auth/[...nextauth]/route';
+
 const prisma = new PrismaClient();
 
-export async function createEmployee(formData, req) {
-  const session = await getServerSession(req, authOptions);
+export async function createEmployee(formData, req, res) {
+  const session = await getServerSession(req, res, authOptions);
   if (!session) {
     return { success: false, message: 'User not authenticated' };
   }
@@ -31,6 +31,3 @@ export async function createEmployee(formData, req) {
     return { success: false, message: 'Error creating employee' };
   }
 }
-
-
-// app/api/auth/[...nextauth]

@@ -1,11 +1,10 @@
-// src/app/api/auth/[...nextauth]/route.js
+// /app/api/auth/[...nextauth]/route.js
 import NextAuth from "next-auth";
 import KeycloakProvider from "next-auth/providers/keycloak";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-// Función para refrescar el token de acceso
 async function requestRefreshOfAccessToken(token) {
   const response = await fetch(`${process.env.KEYCLOAK_ISSUER}/protocol/openid-connect/token`, {
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -48,7 +47,6 @@ export const authOptions = {
           expiresAt: account.expires_at,
         };
       }
-      // Buffer de un minuto (60 * 1000 ms)
       if (Date.now() < token.expiresAt * 1000 - 60 * 1000) {
         return token;
       } else {
@@ -63,6 +61,7 @@ export const authOptions = {
     },
     async session({ session, token }) {
       session.accessToken = token.accessToken;
+      session.user.id = token.id;
       return session;
     },
     async signIn({ user, account, profile }) {
