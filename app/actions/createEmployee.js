@@ -1,7 +1,7 @@
 // app/actions/createEmployee.js
 import { PrismaClient } from '@prisma/client';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/[...nextauth]';
+import { authOptions } from '@next-auth/react'
 // file: app/actions/createEmployee.js
 const prisma = new PrismaClient();
 
