@@ -5,8 +5,10 @@ import { authOptions } from '../api/auth/[...nextauth]/route';
 
 const prisma = new PrismaClient();
 
-export async function createEmployee(formData, req, res) {
+export async function createEmployee(formData) {
   try {
+    const req = {}; // Mock or provide actual request object if available
+    const res = {}; // Mock or provide actual response object if available
     const session = await getServerSession(req, res, authOptions);
     if (!session) {
       return { success: false, message: 'User not authenticated' };
