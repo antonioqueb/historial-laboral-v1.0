@@ -1,18 +1,23 @@
-'use client'
+'use client';
 
 import { useSession, signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function Component() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
-    if (session) {
-      redirect('/dashboard');
+    if (status === "authenticated") {
+      router.push('/dashboard');
     }
-  }, [session]);
+  }, [session, status, router]);
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen px-4 dark:bg-zinc-950">
