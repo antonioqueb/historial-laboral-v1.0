@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { createEmployee } from '@/actions/createEmployee';
 
 export default function DashboardEmployedAdmin() {
   const [error, setError] = useState(null);
@@ -20,12 +19,16 @@ export default function DashboardEmployedAdmin() {
     const formData = new FormData(event.target);
 
     try {
-      const response = await createEmployee(formData);
-      if (response.success) {
+      const response = await fetch('/api/createEmployee', {
+        method: 'POST',
+        body: formData,
+      });
+      const result = await response.json();
+      if (result.success) {
         setSuccess('Empleado agregado exitosamente');
         event.target.reset();
       } else {
-        setError(response.message);
+        setError(result.message);
       }
     } catch (err) {
       setError('Error al agregar el empleado');
