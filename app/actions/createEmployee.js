@@ -1,18 +1,20 @@
 // /app/actions/createEmployee.js
+'use server';
 import { PrismaClient } from '@prisma/client';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../api/auth/[...nextauth]/route';
 
 const prisma = new PrismaClient();
 
-export async function createEmployee(req, res) {
+export async function createEmployee(formData) {
   try {
+    const req = {}; // Mock or provide actual request object if available
+    const res = {}; // Mock or provide actual response object if available
     const session = await getServerSession(req, res, authOptions);
     if (!session) {
       return { success: false, message: 'User not authenticated' };
     }
 
-    const formData = await req.formData();
     const { name, role, department, description } = Object.fromEntries(formData);
     if (!name || !role || !department || !description) {
       return { success: false, message: 'All fields are required' };
