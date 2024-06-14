@@ -35,7 +35,7 @@ export const authOptions = {
       issuer: process.env.KEYCLOAK_ISSUER,
     }),
   ],
-  secret: process.env.NEXTAUTH_SECRET, // Asegúrate de definir esta variable de entorno
+  secret: process.env.NEXTAUTH_SECRET, // Usar la variable de entorno
 
   session: { maxAge: 60 * 30 },
   callbacks: {
