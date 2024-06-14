@@ -13,11 +13,13 @@ export async function createEmployee(formData) {
     const res = {}; // Mock or provide actual response object if available
     const session = await getServerSession(req, res, authOptions);
     if (!session) {
+      console.error('User not authenticated');
       return { success: false, message: 'User not authenticated' };
     }
 
     const { name, role, department, description } = Object.fromEntries(formData);
     if (!name || !role || !department || !description) {
+      console.error('Validation error: All fields are required');
       return { success: false, message: 'All fields are required' };
     }
 

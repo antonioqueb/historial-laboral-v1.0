@@ -1,5 +1,4 @@
 // components/component/dashboard-employed-admin.jsx
-'use client';
 import { useState } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -25,7 +24,7 @@ export default function DashboardEmployedAdmin() {
         setSuccess('Empleado agregado exitosamente');
         event.target.reset();
       } else {
-        setError(result.message);
+        setError(result.message + (result.error ? `: ${result.error}` : ''));
       }
     } catch (err) {
       setError('Error al agregar el empleado');
