@@ -1,5 +1,6 @@
 // /app/actions/createEmployee.js
 'use server';
+
 import { PrismaClient } from '@prisma/client';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../api/auth/[...nextauth]/route';
