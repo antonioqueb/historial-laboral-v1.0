@@ -2,15 +2,16 @@
 'use server';
 
 import { PrismaClient } from '@prisma/client';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../api/auth/[...nextauth]/route';
+import { getToken } from 'next-auth/jwt';
 
 const prisma = new PrismaClient();
 
-export async function createEmployee(req, res, formData) {
+export async function createEmployee(formData) {
   try {
-    const session = await getServerSession(req, res, authOptions);
-    if (!session) {
+    // Obtener la sesión utilizando el token de autenticación
+    const token = await getToken({ req: { headers: { cookie: cookies().toString() } } });
+
+    if (!token) {
       console.error('User not authenticated');
       return { success: false, message: 'User not authenticated' };
     }
@@ -21,7 +22,7 @@ export async function createEmployee(req, res, formData) {
       return { success: false, message: 'All fields are required' };
     }
 
-    const userId = session.user.id;
+    const userId = token.sub; // El ID de usuario está en 'sub' en el token JWT
 
     const employee = await prisma.employee.create({
       data: {
