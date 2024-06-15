@@ -20,7 +20,8 @@ export async function POST(req, res) {
         role,
         department,
         description,
-        userId: user.id,
+        userId: user.id
+
       },
     });
 
