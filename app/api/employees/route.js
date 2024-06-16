@@ -1,4 +1,3 @@
-// app\api\employees\route.js
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
@@ -6,17 +5,13 @@ import prisma from '@/lib/prisma';
 
 export async function POST(request) {
   try {
-    const session = await getServerSession({ req: request, options: authOptions });
+    const session = await getServerSession(request, authOptions);
     if (!session || !session.user) {
       return NextResponse.json({ message: 'Not authenticated' }, { status: 401 });
     }
 
     const userId = session.user.id;
     const { name, role, department, description } = await request.json();
-
-    if (!userId) {
-      return NextResponse.json({ message: 'User ID is required' }, { status: 400 });
-    }
 
     const newEmployee = await prisma.employee.create({
       data: {
@@ -34,6 +29,3 @@ export async function POST(request) {
     return NextResponse.json({ message: 'Error creating employee', error: error.message }, { status: 500 });
   }
 }
-
-
-

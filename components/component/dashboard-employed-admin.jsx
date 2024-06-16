@@ -8,8 +8,11 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { createEmployee } from '@/app/actions/createEmployee';
+import { useSession } from 'next-auth/react';
 
-export default function DashboardEmployedAdmin({ userId }) {
+export default function DashboardEmployedAdmin() {
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
