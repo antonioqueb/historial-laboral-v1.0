@@ -3,7 +3,7 @@ FROM node:20.14.0-bullseye AS base
 
 # Instalar dependencias solo cuando sea necesario
 FROM base AS deps
-RUN apt-get update && apt-get install -y libc6-compat
+RUN apt-get update && apt-get install -y libc6
 WORKDIR /app
 
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
