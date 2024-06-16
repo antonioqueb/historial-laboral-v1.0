@@ -1,3 +1,4 @@
+// app\actions\createEmployee.js
 export async function createEmployee(formData, userId) {
   try {
     const response = await fetch('/api/employees', {
@@ -36,3 +37,4 @@ export async function createEmployee(formData, userId) {
     };
   }
 }
+

@@ -1,3 +1,4 @@
+// app\api\employees\route.js
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
@@ -30,3 +31,4 @@ export async function POST(request) {
     return NextResponse.json({ message: 'Error creating employee', error: error.message }, { status: 500 });
   }
 }
+
