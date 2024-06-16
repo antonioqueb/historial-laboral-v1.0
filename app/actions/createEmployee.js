@@ -1,3 +1,4 @@
+'use server';
 export async function createEmployee(formData) {
   try {
     const response = await fetch('/api/employees', {

@@ -5,8 +5,8 @@ import prisma from '@/lib/prisma';
 
 export async function POST(request) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session) {
+    const session = await getServerSession({ req: request, options: authOptions });
+    if (!session || !session.user) {
       return NextResponse.json({ message: 'Not authenticated' }, { status: 401 });
     }
 

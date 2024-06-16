@@ -1,4 +1,3 @@
-// /app/api/auth/[...nextauth]/route.js
 import NextAuth from "next-auth";
 import KeycloakProvider from "next-auth/providers/keycloak";
 import { PrismaClient } from "@prisma/client";
@@ -35,8 +34,7 @@ export const authOptions = {
       issuer: process.env.KEYCLOAK_ISSUER,
     }),
   ],
-  secret: process.env.NEXTAUTH_SECRET, // Usar la variable de entorno
-
+  secret: process.env.NEXTAUTH_SECRET,
   session: { maxAge: 60 * 30 },
   callbacks: {
     async jwt({ token, account, user }) {
@@ -48,6 +46,9 @@ export const authOptions = {
           refreshToken: account.refresh_token,
           expiresAt: account.expires_at,
         };
+      }
+      if (user) {
+        token.id = user.id;  // Asegúrate de agregar el ID del usuario al token
       }
       if (Date.now() < token.expiresAt * 1000 - 60 * 1000) {
         return token;
@@ -63,7 +64,7 @@ export const authOptions = {
     },
     async session({ session, token }) {
       session.accessToken = token.accessToken;
-      session.user.id = token.id;
+      session.user.id = token.id;  // Asegúrate de que el ID del usuario esté en la sesión
       return session;
     },
     async signIn({ user, account, profile }) {
@@ -71,12 +72,15 @@ export const authOptions = {
       if (email) {
         const existingUser = await prisma.user.findUnique({ where: { email } });
         if (!existingUser) {
-          await prisma.user.create({
+          const newUser = await prisma.user.create({
             data: {
               email: user.email,
               name: user.name,
             },
           });
+          user.id = newUser.id;  // Asigna el nuevo ID de usuario
+        } else {
+          user.id = existingUser.id;  // Asigna el ID del usuario existente
         }
       }
       return true;
