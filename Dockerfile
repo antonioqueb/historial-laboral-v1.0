@@ -1,9 +1,9 @@
 # Etapa base
-FROM node:18-alpine AS base
+FROM node:20.14.0-bullseye AS base
 
 # Instalar dependencias solo cuando sea necesario
 FROM base AS deps
-RUN apk add --no-cache libc6-compat
+RUN apt-get update && apt-get install -y libc6-compat
 WORKDIR /app
 
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
