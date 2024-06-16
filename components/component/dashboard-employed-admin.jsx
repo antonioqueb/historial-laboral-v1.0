@@ -1,3 +1,4 @@
+// components\component\dashboard-employed-admin.jsx
 'use client';
 
 import { useState } from 'react';
@@ -8,7 +9,7 @@ import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { createEmployee } from '@/app/actions/createEmployee';
 
-export default function DashboardEmployedAdmin() {
+export default function DashboardEmployedAdmin({ userId }) {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
@@ -20,7 +21,7 @@ export default function DashboardEmployedAdmin() {
     const formData = new FormData(event.target);
 
     try {
-      const result = await createEmployee(formData);
+      const result = await createEmployee(formData, userId);
       if (result.success) {
         setSuccess('Empleado agregado exitosamente');
         event.target.reset();

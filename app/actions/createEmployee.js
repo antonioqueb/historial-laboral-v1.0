@@ -1,4 +1,4 @@
-export async function createEmployee(formData) {
+export async function createEmployee(formData, userId) {
   try {
     const response = await fetch('/api/employees', {
       method: 'POST',
@@ -7,6 +7,7 @@ export async function createEmployee(formData) {
         role: formData.get('role'),
         department: formData.get('department'),
         description: formData.get('description'),
+        userId: userId, // Agregar el userId aquí
       }),
       headers: {
         'Content-Type': 'application/json',
