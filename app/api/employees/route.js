@@ -1,19 +1,19 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
+import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import prisma from '@/lib/prisma';
 
 export async function POST(request) {
   try {
-    const session = await getServerSession(request, authOptions);
+    const session = await getServerSession(authOptions, request);
+    
     if (!session || !session.user) {
       return NextResponse.json({ message: 'Not authenticated' }, { status: 401 });
     }
 
     const userId = session.user.id;
-    console.log('Creating employee for user:', userId);
     const { name, role, department, description } = await request.json();
-    console.log('Creating employee with data:', { name, role, department, description });
+
     const newEmployee = await prisma.employee.create({
       data: {
         name,
@@ -23,9 +23,8 @@ export async function POST(request) {
         userId,
       },
     });
-    console.log('Employee created:', newEmployee);
+
     return NextResponse.json(newEmployee, { status: 201 });
-    
   } catch (error) {
     console.error('Error creating employee:', error);
     return NextResponse.json({ message: 'Error creating employee', error: error.message }, { status: 500 });
