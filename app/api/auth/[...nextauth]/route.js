@@ -1,8 +1,7 @@
-// app/api/auth/[...nextauth]/route.js
+//app\api\auth\[...nextauth]\route.js
 import NextAuth from "next-auth";
 import KeycloakProvider from "next-auth/providers/keycloak";
 import { PrismaClient } from "@prisma/client";
-import { setCookie } from "nookies";
 
 const prisma = new PrismaClient();
 
@@ -50,7 +49,7 @@ export const authOptions = {
         };
       }
       if (user) {
-        token.id = user.id;
+        token.id = user.id;  // Asegúrate de agregar el ID del usuario al token
       }
       if (Date.now() < token.expiresAt * 1000 - 60 * 1000) {
         return token;
@@ -66,7 +65,7 @@ export const authOptions = {
     },
     async session({ session, token }) {
       session.accessToken = token.accessToken;
-      session.user.id = token.id;
+      session.user.id = token.id;  // Asegúrate de que el ID del usuario esté en la sesión
       return session;
     },
     async signIn({ user, account, profile }) {
@@ -80,9 +79,9 @@ export const authOptions = {
               name: user.name,
             },
           });
-          user.id = newUser.id;
+          user.id = newUser.id;  // Asigna el nuevo ID de usuario
         } else {
-          user.id = existingUser.id;
+          user.id = existingUser.id;  // Asigna el ID del usuario existente
         }
       }
       return true;
@@ -94,13 +93,5 @@ export const authOptions = {
   },
 };
 
-const handler = async (req, res) => {
-  try {
-    await NextAuth(req, res, authOptions);
-  } catch (error) {
-    console.error('Error in authentication:', error);
-    res.status(500).json({ message: 'Error in authentication', error: error.message });
-  }
-};
-
+const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
