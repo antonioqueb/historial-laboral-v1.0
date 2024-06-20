@@ -2,8 +2,8 @@
 import { getSession } from 'next-auth/react';
 import { NextResponse } from 'next/server';
 
-export async function GET(req) {
-  const session = await getSession({ req });
+export async function GET(request) {
+  const session = await getSession({ req: request });
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }

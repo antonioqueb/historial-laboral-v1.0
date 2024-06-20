@@ -10,6 +10,8 @@ import Image from "next/image";
 export default function Header() {
   const [imageError, setImageError] = useState(false);
   const { data: session } = useSession();
+  console.log(session); // Verifica que la sesión contenga el ID del usuario
+
 
   const handleImageError = () => {
     setImageError(true);
