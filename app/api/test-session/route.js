@@ -4,10 +4,15 @@ import { authOptions } from '../auth/[...nextauth]/route';
 import { NextResponse } from 'next/server';
 
 export async function GET(request) {
-  const session = await getServerSession(request, authOptions);
-  if (!session) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  try {
+    const session = await getServerSession({ req: request }, authOptions);
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
-  return NextResponse.json({ session }, { status: 200 });
+    return NextResponse.json({ session }, { status: 200 });
+  } catch (error) {
+    console.error('Error obtaining session:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
 }

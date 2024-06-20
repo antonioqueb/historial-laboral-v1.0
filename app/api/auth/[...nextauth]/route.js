@@ -1,4 +1,3 @@
-//app\api\auth\[...nextauth]\route.js
 import NextAuth from "next-auth";
 import KeycloakProvider from "next-auth/providers/keycloak";
 import { PrismaClient } from "@prisma/client";
